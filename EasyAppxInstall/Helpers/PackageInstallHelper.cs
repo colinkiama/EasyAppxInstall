@@ -57,16 +57,13 @@ namespace EasyAppxInstall.Helpers
           
             if (pkgRegistered == true)
             {
-                permissionTextBlock.Text = "Completed";
-                notification.ShowInstallationHasCompleted(packageInContext.Name);
-
+               
 
 
             }
             else
             {
-                resultTextBlock.Text = resultText;
-                notification.sendError(resultText);
+              
             }
         }
 
