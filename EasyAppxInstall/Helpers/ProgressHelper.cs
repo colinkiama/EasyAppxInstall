@@ -10,7 +10,7 @@ namespace EasyAppxInstall.Helpers
     {
         public static void PrintProgressToConsole(double installPercentage)
         {
-
+            
         }
     }
 }

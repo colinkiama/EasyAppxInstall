@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Windows.Management.Deployment;
 using Windows.Storage;
 
@@ -8,45 +9,57 @@ namespace EasyAppxInstall.Helpers
 {
     public class PackageInstallHelper
     {
-        public static string resultText = "";
         static bool pkgRegistered = false;
         static PackageManager pkgManager = new PackageManager();
         static Progress<DeploymentProgress> progressCallback = new Progress<DeploymentProgress>(installProgress);
 
-        public static async void InstallPackage(string packagePath)
+        public static async Task<bool> InstallPackage(string packagePath)
         {
+            bool packageRegistered = false;
             try
             {
                 var result = await pkgManager.AddPackageAsync(new Uri(packagePath), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
-                checkIfPackageRegistered(result, resultText);
+                packageRegistered = checkIfPackageRegistered(result);
+               
             }
 
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                PrintInstallErrorMessage(e.Message);
             }
 
+            return packageRegistered;
         }
 
-        public static async void InstallPackage(string packagePath, string[] dependencyPaths)
+        public static async Task<bool> InstallPackage(string packagePath, string[] dependencyPaths)
         {
-            Uri packageUri = new Uri(packagePath);
+            bool packageRegistered = false;
 
+            Uri packageUri = new Uri(packagePath);
             Uri[] dependencyUris = UriHelper.CreateUrisFromPaths(dependencyPaths);
+
             try
             {
                 var result = await pkgManager.AddPackageAsync(packageUri, dependencyUris, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
-                checkIfPackageRegistered(result, resultText);
+               packageRegistered = checkIfPackageRegistered(result);
 
             }
             catch (Exception e)
             {
-                resultText = e.Message;
+                PrintInstallErrorMessage(e.Message);
             }
+
+            return packageRegistered;
         }
 
-        private static void checkIfPackageRegistered(DeploymentResult result, string resultText)
+        private static void PrintInstallErrorMessage(string message)
         {
+            Console.WriteLine(message);
+        }
+
+        private static bool checkIfPackageRegistered(DeploymentResult result)
+        {
+            bool isRegistered = false;
             if (result.ErrorText.Trim().Length > 0)
             {
                 Console.WriteLine(result.ErrorText);
@@ -54,7 +67,10 @@ namespace EasyAppxInstall.Helpers
             else
             {
                 Console.WriteLine("Install Completed! - Your newly installed app should be available in the start menu");
+                isRegistered = true;
             }
+
+            return isRegistered;
         }
 
 
