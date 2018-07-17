@@ -9,16 +9,16 @@ namespace EasyAppxInstall.Helpers
 {
     public class PackageInstallHelper
     {
-        static bool pkgRegistered = false;
         static PackageManager pkgManager = new PackageManager();
         static Progress<DeploymentProgress> progressCallback = new Progress<DeploymentProgress>(installProgress);
 
         public static async Task<bool> InstallPackage(string packagePath)
         {
+            Console.WriteLine($"Starting to install package from {packagePath}");
             bool packageRegistered = false;
             try
             {
-                DeploymentResult result = await pkgManager.AddPackageAsync(new Uri(packagePath), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
+                DeploymentResult result = await pkgManager.AddPackageAsync(new Uri(packagePath,UriKind.Absolute), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
                 packageRegistered = checkIfPackageRegistered(result);
             }
 
