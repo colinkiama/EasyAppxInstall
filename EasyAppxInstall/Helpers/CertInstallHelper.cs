@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EasyAppxInstall.Helpers
 {
-    public class CertInstallHelper
+    public static class CertInstallHelper
     {
         public static void InstallCert(string[] args)
         {

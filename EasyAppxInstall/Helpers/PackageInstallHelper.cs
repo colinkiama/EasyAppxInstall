@@ -6,88 +6,64 @@ using Windows.Storage;
 
 namespace EasyAppxInstall.Helpers
 {
-   public class PackageInstallHelper
+    public class PackageInstallHelper
     {
-        StorageFile packageInContext;
-        List<Uri> dependencies = new List<Uri>();
-        //ValueSet cannot contain values of the URI class which is why there is another list below.
-        //This is required to update the progress in a notification using a background task.
-        List<string> dependenciesAsString = new List<string>();
+        public static string resultText = "";
+        static bool pkgRegistered = false;
+        static PackageManager pkgManager = new PackageManager();
+        static Progress<DeploymentProgress> progressCallback = new Progress<DeploymentProgress>(installProgress);
 
-        bool pkgRegistered = false;
-
-        private async void showProgressInApp()
+        public static async void InstallPackage(string packagePath)
         {
-          
-            PackageManager pkgManager = new PackageManager();
-            Progress<DeploymentProgress> progressCallback = new Progress<DeploymentProgress>(installProgress);
-            string resultText = "Nothing";
-
-            
-            if (dependencies != null && dependencies.Count > 0)
+            try
             {
-                try
-                {
-                    var result = await pkgManager.AddPackageAsync(new Uri(packageInContext.Path), dependencies, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
-                    checkIfPackageRegistered(result, resultText);
-
-                }
-                catch (Exception e)
-                {
-                    resultText = e.Message;
-                }
-
-            }
-            else
-            {
-                try
-                {
-
-                    var result = await pkgManager.AddPackageAsync(new Uri(packageInContext.Path), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
-                    checkIfPackageRegistered(result, resultText);
-                }
-
-                catch (Exception e)
-                {
-                    resultText = e.Message;
-                }
-
+                var result = await pkgManager.AddPackageAsync(new Uri(packagePath), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
+                checkIfPackageRegistered(result, resultText);
             }
 
-          
-            if (pkgRegistered == true)
+            catch (Exception e)
             {
-               
+                Console.WriteLine(e.Message);
+            }
 
+        }
+
+        public static async void InstallPackage(string packagePath, string[] dependencyPaths)
+        {
+            Uri packageUri = new Uri(packagePath);
+
+            Uri[] dependencyUris = UriHelper.CreateUrisFromPaths(dependencyPaths);
+            try
+            {
+                var result = await pkgManager.AddPackageAsync(packageUri, dependencyUris, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
+                checkIfPackageRegistered(result, resultText);
 
             }
-            else
+            catch (Exception e)
             {
-              
+                resultText = e.Message;
             }
         }
 
-        private void checkIfPackageRegistered(DeploymentResult result, string resultText)
+        private static void checkIfPackageRegistered(DeploymentResult result, string resultText)
         {
-            if (result.)
+            if (result.ErrorText.Trim().Length > 0)
             {
-
+                Console.WriteLine(result.ErrorText);
             }
+            else
             {
-                resultText = result.ErrorText;
+                Console.WriteLine("Install Completed! - Your newly installed app should be available in the start menu");
             }
         }
 
-       
-        private void installProgress(DeploymentProgress installProgress)
+
+        private static void installProgress(DeploymentProgress installProgress)
         {
             double installPercentage = installProgress.percentage;
-            string percentageAsString = String.Format($"{installPercentage}%");
+            ProgressHelper.PrintProgressToConsole(installPercentage);
+
         }
-
-        
-
-        
 
     }
 }
