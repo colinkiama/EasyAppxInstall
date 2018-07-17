@@ -34,7 +34,7 @@ namespace EasyAppxInstall.Helpers
             }
             else
             {
-                Console.WriteLine(progressString);
+                Console.Write($"{progressString}\n");
             }
             
             
