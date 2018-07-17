@@ -18,9 +18,8 @@ namespace EasyAppxInstall.Helpers
             bool packageRegistered = false;
             try
             {
-                var result = await pkgManager.AddPackageAsync(new Uri(packagePath), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
+                DeploymentResult result = await pkgManager.AddPackageAsync(new Uri(packagePath), null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
                 packageRegistered = checkIfPackageRegistered(result);
-               
             }
 
             catch (Exception e)
@@ -40,7 +39,7 @@ namespace EasyAppxInstall.Helpers
 
             try
             {
-                var result = await pkgManager.AddPackageAsync(packageUri, dependencyUris, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
+               DeploymentResult result = await pkgManager.AddPackageAsync(packageUri, dependencyUris, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
                packageRegistered = checkIfPackageRegistered(result);
 
             }

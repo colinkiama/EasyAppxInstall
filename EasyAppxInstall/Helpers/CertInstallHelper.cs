@@ -50,7 +50,7 @@ namespace EasyAppxInstall.Helpers
         public static void InstallCertFromDirectory(string currentDirectory)
         {
             Console.WriteLine($"Current directory is: {currentDirectory}");
-            var files = Directory.GetFiles(currentDirectory, "*.cer");
+            string[] files = Directory.GetFiles(currentDirectory, "*.cer");
 
 
             if (files.Length > 0)
@@ -154,7 +154,7 @@ namespace EasyAppxInstall.Helpers
             string fileName = "";
             bool isFileFound = false;
 
-            var files = Directory.GetFiles(currentDirectory, searchPattern);
+            string[] files = Directory.GetFiles(currentDirectory, searchPattern);
             if (files.Length > 0)
             {
                 isFileFound = true;
