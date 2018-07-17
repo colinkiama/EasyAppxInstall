@@ -10,7 +10,7 @@ namespace EasyAppxInstall.Helpers
 {
     public static class CertInstallHelper
     {
-        public static void InstallCert(string[] args)
+        public static void InstallCert(params string[] args)
         {
             if (args.Length > 0)
             {
@@ -112,7 +112,7 @@ namespace EasyAppxInstall.Helpers
             string signedPackagePath = TryFindSignedPackagePath(currentDirectory);
 
 
-            if (signedPackagePath != "null")
+            if (signedPackagePath != "")
             {
                 InstallCertFromSignedPackage(signedPackagePath);
             }
@@ -128,40 +128,15 @@ namespace EasyAppxInstall.Helpers
 
         private static string TryFindSignedPackagePath(string currentDirectory)
         {
-            string packagePath = "null";
+            string packagePath = FileFinderHelper.FindFileFromDirectory(currentDirectory, "*.appxbundle");
 
-            Tuple<bool, string> fileQueryResult = FindFilesFromDirectory(currentDirectory, "*.appxbundle");
-            if (fileQueryResult.Item1 == true)
+            if (packagePath == "")
             {
-                packagePath = fileQueryResult.Item2;
-            }
-
-            else
-            {
-                fileQueryResult = FindFilesFromDirectory(currentDirectory, "*.appx");
-                if (fileQueryResult.Item1 == true)
-                {
-                    packagePath = fileQueryResult.Item2;
-                }
-
+                packagePath = FileFinderHelper.FindFileFromDirectory(currentDirectory, "*.appx");
             }
 
             return packagePath;
         }
 
-        private static Tuple<bool, string> FindFilesFromDirectory(string currentDirectory, string searchPattern)
-        {
-            string fileName = "";
-            bool isFileFound = false;
-
-            string[] files = Directory.GetFiles(currentDirectory, searchPattern);
-            if (files.Length > 0)
-            {
-                isFileFound = true;
-                fileName = files[0];
-            }
-
-            return Tuple.Create(isFileFound, fileName);
-        }
     }
 }

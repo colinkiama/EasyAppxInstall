@@ -10,17 +10,57 @@ namespace EasyAppxInstall
     class Program
     {
 
+        //const string testPkgPath = "C:/Users/colinkiama/source/repos/Yata/YATA/AppPackages/YATA_1.7.1.0_Test/YATA_1.7.1.0_x86_x64_arm.appxbundle";
+
         static void Main(string[] args)
         {
-            const string testPkgPath = "C:/Users/colinkiama/source/repos/Yata/YATA/AppPackages/YATA_1.7.1.0_Test/YATA_1.7.1.0_x86_x64_arm.appxbundle";
-
-            Console.WriteLine("Full Test");
-            CertInstallHelper.InstallCertFromSignedPackage(testPkgPath);
-            Task.Run(async () =>
+            Console.WriteLine("Installing certificates then installing package");
+            if (args.Length > 0)
             {
-                await PackageInstallHelper.InstallPackage(testPkgPath);
-            }).GetAwaiter().GetResult();
+                CertInstallHelper.InstallCert(args[0]);
+                AddBlankLine();
+
+                if (args.Length == 1)
+                {
+                    Task.Run(async () =>
+                    {
+                        await PackageInstallHelper.InstallPackage(args[0]);
+                    }).GetAwaiter().GetResult();
+                }
+               
+                else if (args[0] == "/f")
+                {
+                    Task.Run(async () =>
+                    {
+                        await PackageInstallHelper.InstallPackageWithForeignDependencies(args[1], args[2]);
+                    }).GetAwaiter().GetResult();
+                }
+
+
+                else if (args.Length == 3)
+                {
+                    Task.Run(async () =>
+                    {
+                        await PackageInstallHelper.InstallPackage(args[0], args[1], args[2]);
+                    }).GetAwaiter().GetResult();
+                }
+            }
+            else
+            {
+                CertInstallHelper.InstallCert();
+                AddBlankLine();
+                Task.Run(async () =>
+                {
+                    await PackageInstallHelper.InstallPackageFromCurrentDirectory();
+                }).GetAwaiter().GetResult();
+            }
+
             Console.ReadLine();
+        }
+
+        private static void AddBlankLine()
+        {
+            Console.WriteLine();
         }
     }
 }

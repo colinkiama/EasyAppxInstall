@@ -20,9 +20,7 @@ namespace EasyAppxInstall.Helpers
             AddSpacingToString(ref sb, progressCharsToPrint);
             AddProgressValue(ref sb, installPercentage);
             string progressString = sb.ToString();
-            PrintProgressStringToConsole(progressString, installPercentage);
-            
-            
+            PrintProgressStringToConsole(progressString, installPercentage);            
         }
 
         private static void PrintProgressStringToConsole(string progressString, double installPercentage)
