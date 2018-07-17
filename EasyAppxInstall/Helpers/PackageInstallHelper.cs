@@ -18,45 +18,53 @@ namespace EasyAppxInstall.Helpers
             const string appxPattern = "*.appx";
             const string appxBundlePattern = "*.appxbundle";
 
-            bool packageRegistered = false;
             string currentDirectory = Directory.GetCurrentDirectory();
-            string packageFromCurrentDirectory = FileFinderHelper.FindFileFromDirectory(currentDirectory, appxPattern);
-            if (packageFromCurrentDirectory == "")
+            
+            string packagePathFromCurrentDirectory = FileFinderHelper.FindFileFromDirectory(currentDirectory, appxPattern);
+            string[] dependencyPaths = DependencyHelper.GetDependencyPaths(currentDirectory + "\\Dependencies", true);
+
+            if (packagePathFromCurrentDirectory == "")
             {
-                packageFromCurrentDirectory = FileFinderHelper.FindFileFromDirectory(currentDirectory, appxBundlePattern);
+                packagePathFromCurrentDirectory = FileFinderHelper.FindFileFromDirectory(currentDirectory, appxBundlePattern);
             }
 
-            if (packageFromCurrentDirectory == "")
+            if (packagePathFromCurrentDirectory != "")
             {
-                await InstallPackage(packageFromCurrentDirectory);
+                if (dependencyPaths.Length > 0)
+                {
+                    await InstallPackage(packagePathFromCurrentDirectory, dependencyPaths);
+                }
+                else
+                {
+                    await InstallPackage(packagePathFromCurrentDirectory);
+                }
             }
 
         }
 
-        internal static Task InstallPackageWithForeignDependencies(string packagePath, string dependencyDirectory)
+        internal async static Task InstallPackageWithForeignDependencies(string packagePath, string dependencyDirectory)
         {
-            throw new NotImplementedException();
+            string[] dependencyPaths = DependencyHelper.GetDependencyPaths(dependencyDirectory);
+            if (dependencyPaths.Length > 0)
+            {
+                await InstallPackage(packagePath, dependencyPaths);
+            }
+            else
+            {
+                Console.WriteLine("No dependencies found at directory. Will try to install only the app package instead.");
+                await InstallPackage(packagePath);
+            }
         }
 
-        internal static Task InstallPackage(string packagePath, string certificatePath, string dependencyDirectoryPath)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static Task InstallPackageWithForeignDependencies(string v)
-        {
-            throw new NotImplementedException();
-        }
 
         public static async Task InstallPackage(string packagePath)
         {
             Console.WriteLine($"Starting to install package from {packagePath}");
-            bool packageRegistered = false;
             try
             {
-                DeploymentResult result = await pkgManager.AddPackageAsync(new Uri(packagePath, UriKind.Absolute), 
+                DeploymentResult result = await pkgManager.AddPackageAsync(new Uri(packagePath, UriKind.Absolute),
                     null, DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
-                checkIfPackageRegistered(result);
+                confirmPackageRegistration(result);
             }
 
             catch (Exception e)
@@ -69,23 +77,20 @@ namespace EasyAppxInstall.Helpers
 
         public static async Task InstallPackage(string packagePath, string[] dependencyPaths)
         {
-
-
             Uri packageUri = new Uri(packagePath);
             Uri[] dependencyUris = UriHelper.CreateUrisFromPaths(dependencyPaths);
 
             try
             {
-                DeploymentResult result = await pkgManager.AddPackageAsync(packageUri, dependencyUris, 
+                DeploymentResult result = await pkgManager.AddPackageAsync(packageUri, dependencyUris,
                     DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
-                checkIfPackageRegistered(result);
+                confirmPackageRegistration(result);
 
             }
             catch (Exception e)
             {
                 PrintInstallErrorMessage(e.Message);
             }
-
 
         }
 
@@ -94,9 +99,9 @@ namespace EasyAppxInstall.Helpers
             Console.WriteLine(message);
         }
 
-        private static bool checkIfPackageRegistered(DeploymentResult result)
+
+        private static void confirmPackageRegistration(DeploymentResult result)
         {
-            bool isRegistered = false;
             if (result.ErrorText.Trim().Length > 0)
             {
                 Console.WriteLine(result.ErrorText);
@@ -104,10 +109,7 @@ namespace EasyAppxInstall.Helpers
             else
             {
                 Console.WriteLine("Install Completed! - Your newly installed app should be available in the start menu");
-                isRegistered = true;
             }
-
-            return isRegistered;
         }
 
 
@@ -115,7 +117,6 @@ namespace EasyAppxInstall.Helpers
         {
             double installPercentage = installProgress.percentage;
             ProgressHelper.PrintProgressToConsole(installPercentage);
-
         }
 
     }

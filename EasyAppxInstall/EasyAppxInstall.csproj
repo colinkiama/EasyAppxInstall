@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CertInstallHelper.cs" />
+    <Compile Include="Helpers\DependencyHelper.cs" />
     <Compile Include="Helpers\FileFinderHelper.cs" />
     <Compile Include="Helpers\PackageInstallHelper.cs" />
     <Compile Include="Helpers\ProgressHelper.cs" />

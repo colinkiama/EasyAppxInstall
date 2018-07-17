@@ -9,17 +9,23 @@ namespace EasyAppxInstall.Helpers
 {
     public static class FileFinderHelper
     {
-        public static string FindFileFromDirectory(string currentDirectory, string searchPattern)
+        public static string FindFileFromDirectory(string directory, string searchPattern)
         {
             string fileName = "";
 
-            string[] files = Directory.GetFiles(currentDirectory, searchPattern);
+            string[] files = Directory.GetFiles(directory, searchPattern);
             if (files.Length > 0)
             {
                 fileName = files[0];
             }
 
             return fileName;
+        }
+
+        public static string[] FindMultipleFilesFromDirectory(string directory, string searchPattern)
+        {
+            string[] fileNames = Directory.GetFiles(directory, searchPattern);
+            return fileNames;
         }
 
       
