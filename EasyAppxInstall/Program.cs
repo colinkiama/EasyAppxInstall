@@ -27,7 +27,7 @@ namespace EasyAppxInstall
                         await PackageInstallHelper.InstallPackage(args[0]);
                     }).GetAwaiter().GetResult();
                 }
-               
+
                 else if (args[0] == "/f")
                 {
                     Task.Run(async () =>
@@ -36,14 +36,6 @@ namespace EasyAppxInstall
                     }).GetAwaiter().GetResult();
                 }
 
-
-                else if (args.Length == 3)
-                {
-                    Task.Run(async () =>
-                    {
-                        await PackageInstallHelper.InstallPackage(args[0], args[1], args[2]);
-                    }).GetAwaiter().GetResult();
-                }
             }
             else
             {
