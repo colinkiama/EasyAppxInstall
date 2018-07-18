@@ -23,17 +23,20 @@ namespace EasyAppxInstall.Helpers
             PrintProgressStringToConsole(progressString, installPercentage);            
         }
 
+
+        private static void ClearCurrentConsoleLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+        }
+
         private static void PrintProgressStringToConsole(string progressString, double installPercentage)
         {
-            Console.SetCursorPosition(0, Console.CursorTop);
-            if (installPercentage < 100)
-            {
-                Console.Write(progressString);
-            }
-            else
-            {
-                Console.Write($"{progressString}\n");
-            }
+            ClearCurrentConsoleLine();
+            Console.Write($"{progressString}");
+           
             
             
         }

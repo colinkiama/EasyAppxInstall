@@ -126,7 +126,7 @@ namespace EasyAppxInstall.Helpers
             }
             else
             {
-                Console.WriteLine("Install Completed! - Your newly installed app should is available in the start menu.");
+                Console.WriteLine("\nInstall Completed! - Your newly installed app should is available in the start menu.");
             }
         }
 
