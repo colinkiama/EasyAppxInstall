@@ -4,6 +4,10 @@ C# console app that enables simple, easy, seamless installation of sideloaded UW
 ## Where to get the program:
 You can get the program from here [EasyAppInstall Releases](https://github.com/colinkiama/EasyAppInstall/releases)
 
+# Requirements:
+- Windows 10 Anniversary Update (Build 14393)
+- Sideload Mode or Developer Mode enabled. (Settings > Update & Security > For developers > Select "Sideload apps")
+
 ## How to use the program:
 ### 1. Using Windows Explorer
 Start "EasyAppxInstall.exe" in the directory where app package you want to install is.
