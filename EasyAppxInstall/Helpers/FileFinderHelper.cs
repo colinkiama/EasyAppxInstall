@@ -24,10 +24,17 @@ namespace EasyAppxInstall.Helpers
 
         public static string[] FindMultipleFilesFromDirectory(string directory, string searchPattern)
         {
-            string[] fileNames = Directory.GetFiles(directory, searchPattern);
+            string[] fileNames = { };
+            try
+            {
+                fileNames = Directory.GetFiles(directory, searchPattern);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Could not locate Dependencies folder. Will proceed to install package only.");
+            }
             return fileNames;
         }
-
       
     }
 }

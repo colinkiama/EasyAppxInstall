@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Management.Deployment;
 using Windows.Storage;
@@ -15,6 +16,7 @@ namespace EasyAppxInstall.Helpers
 
         public static async Task InstallPackageFromCurrentDirectory()
         {
+            Console.WriteLine("Installing from current directory");
             const string appxPattern = "*.appx";
             const string appxBundlePattern = "*.appxbundle";
 
@@ -38,6 +40,12 @@ namespace EasyAppxInstall.Helpers
                 {
                     await InstallPackage(packagePathFromCurrentDirectory);
                 }
+            }
+            else
+            {
+                Console.WriteLine("No packages found in current directory.");
+                
+             
             }
 
         }
@@ -85,18 +93,27 @@ namespace EasyAppxInstall.Helpers
                 DeploymentResult result = await pkgManager.AddPackageAsync(packageUri, dependencyUris,
                     DeploymentOptions.ForceTargetApplicationShutdown).AsTask(progressCallback);
                 confirmPackageRegistration(result);
+                await InstallPackageWithoutDependencies(packagePath);
 
             }
             catch (Exception e)
             {
                 PrintInstallErrorMessage(e.Message);
+               await InstallPackageWithoutDependencies(packagePath);
             }
 
+        }
+
+        private static async Task InstallPackageWithoutDependencies(string packagePath)
+        {
+            Console.WriteLine("Will now attempt to install the package without dependencies.");
+            await InstallPackage(packagePath);
         }
 
         private static void PrintInstallErrorMessage(string message)
         {
             Console.WriteLine(message);
+            Program.BadExit();
         }
 
 
@@ -105,10 +122,11 @@ namespace EasyAppxInstall.Helpers
             if (result.ErrorText.Trim().Length > 0)
             {
                 Console.WriteLine(result.ErrorText);
+                
             }
             else
             {
-                Console.WriteLine("Install Completed! - Your newly installed app should be available in the start menu");
+                Console.WriteLine("Install Completed! - Your newly installed app should is available in the start menu.");
             }
         }
 

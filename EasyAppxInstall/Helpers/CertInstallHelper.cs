@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EasyAppxInstall.Helpers
@@ -35,6 +36,7 @@ namespace EasyAppxInstall.Helpers
                 else
                 {
                     Console.WriteLine("Invalid parameters were entered. Please enter a path to a certificate file \".cer\" app package file \".appx\" or \".appxbundle\" or a directory");
+                    Program.BadExit();
                 }
             }
 
@@ -44,7 +46,6 @@ namespace EasyAppxInstall.Helpers
                 InstallCertFromDirectory(currentDirectory);
             }
 
-            Console.ReadLine();
         }
 
         public static void InstallCertFromDirectory(string currentDirectory)
@@ -63,7 +64,6 @@ namespace EasyAppxInstall.Helpers
                     store.Add(cert);
                 }
                 Console.WriteLine($"{certFileName} has successfully been added to the certifcate store.");
-                Console.WriteLine("You can now easily install the app by double clicking the .appx/.appxbundle file");
             }
 
             else
@@ -85,7 +85,6 @@ namespace EasyAppxInstall.Helpers
                 store.Add(cert);
             }
             Console.WriteLine($"Certificate for signed package: {filePath} has successfully been added to the certifcate store.");
-            Console.WriteLine("You can now easily install the app by double clicking the .appx/.appxbundle file");
         }
 
         public static void InstallCertFromCertFilePath(string filePath)
@@ -98,7 +97,6 @@ namespace EasyAppxInstall.Helpers
                 store.Add(cert);
             }
             Console.WriteLine($"{filePath} has successfully been added to the certifcate store.");
-            Console.WriteLine("You can now easily install the app by double clicking the .appx/.appxbundle file");
         }
 
         private static void PrintFilePath(string filePath)
@@ -120,7 +118,8 @@ namespace EasyAppxInstall.Helpers
             else
             {
                 Console.WriteLine("Certificate file or signed package is not available in the current directory.");
-                Console.WriteLine("Please launch this program in the directory where the certifcate file or appx  you want to install is located");
+                Console.WriteLine("Please launch this program in the directory where the appx/appxbundle package you want to install is.");
+                Program.BadExit();
             }
         }
 
