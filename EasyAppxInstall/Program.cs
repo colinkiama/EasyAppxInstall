@@ -10,9 +10,6 @@ namespace EasyAppxInstall
 {
     class Program
     {
-
-        //const string testPkgPath = "C:/Users/colinkiama/source/repos/Yata/YATA/AppPackages/YATA_1.7.1.0_Test/YATA_1.7.1.0_x86_x64_arm.appxbundle";
-
         static void Main(string[] args)
         {
             if (args.Length > 0)
