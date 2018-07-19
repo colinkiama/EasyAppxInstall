@@ -108,7 +108,7 @@ namespace EasyAppxInstall.Helpers
 
         private static async Task InstallPackageWithoutDependencies(string packagePath, string errorMessageWithDependencies = "Install with dependencies failed")
         {
-            Console.WriteLine("\n" + errorMessageWithDependencies);
+            Console.WriteLine("\n" + errorMessageWithDependencies + "\n");
             Console.WriteLine("Will now attempt to install the package without dependencies.");
             await InstallPackage(packagePath);
         }
