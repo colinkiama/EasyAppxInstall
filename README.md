@@ -2,7 +2,7 @@
 C# console app that enables simple, easy, seamless installation of sideloaded UWP apps 
 
 ## Where to get the program:
-You can get the program from here [EasyAppInstall Releases](https://github.com/colinkiama/EasyAppInstall/releases)
+You can get the program from here [EasyAppxInstall Releases](https://github.com/colinkiama/EasyAppxInstall/releases)
 
 # Requirements:
 - Windows 10 Anniversary Update (Build 14393)
