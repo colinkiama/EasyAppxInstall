@@ -19,6 +19,7 @@ namespace EasyAppxInstall.Helpers
         {
             if (dividedIntoArchitectures == false)
             {
+                Console.WriteLine($"Dependency Directory: {directory}");
                 return FileFinderHelper.FindMultipleFilesFromDirectory(directory, appxPattern);
             }
             else
@@ -35,7 +36,7 @@ namespace EasyAppxInstall.Helpers
             string[] dependenciesToReturn;
 
             string searchDirectory = UpdateSearchDirectory(directory, archFolderName);
-            Console.WriteLine(searchDirectory);
+            
             if (archFolderName == arm64String)
             {
                 dependenciesToReturn = FileFinderHelper.FindMultipleFilesFromDirectory(searchDirectory, appxPattern);
@@ -115,8 +116,9 @@ namespace EasyAppxInstall.Helpers
 
         private static string UpdateSearchDirectory(string directory, string archFolderName)
         {
-            Console.WriteLine(directory + $"\\{archFolderName}");
-            return directory + $"\\{archFolderName}";
+            string directoryToReturn = $"\\{archFolderName}";
+            Console.WriteLine($"Dependency Directory: {directoryToReturn}");
+            return directoryToReturn ;
         }
 
         private static string GetArchitectureFolderName()
