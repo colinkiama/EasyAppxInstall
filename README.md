@@ -33,9 +33,9 @@ C:\>EasyAppInsall.exe C:\AppPackages\MyApp.appxbundle
 
 Install app package with chosen depednency path:
 ```
-// EasyAppInstall.exe [App Package Path] [Dependencies Directory*]
+// EasyAppInstall.exe /f [App Package Path] [Dependencies Directory*]
 // *Note: Please ensure the directory is contains dependencies for you device's architecure (x86, x64, arm, arm64 etc.)
-C:\>EasyAppInsall.exe C:\AppPackages\MyApp.appxbundle C:\Dependencies
+C:\>EasyAppInsall.exe /f C:\AppPackages\MyApp.appxbundle C:\Dependencies
 ```
 
 
