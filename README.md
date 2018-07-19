@@ -17,30 +17,33 @@ Then, it tries to install the app package (.appx/.appxbundle) while trying to in
 
 ### 2. Using a command line program (e.g Command Prompt):
 You can run the app with a path to a directory or file as a parameter.
-For example:
-```
-C:\>EasyAppInsall.exe [App Package Path]
-```
+
 #### Usage Examples: 
 
-Install package from current directory (requires path installation):
+Install package (will also try to install dependencies if included in a default app package output layout) from current directory (requires path installation):
 ```
-
+C:\PackageInstallDirectory\>EasyAppInsall
 ```
 
 Install app package from its path (no dependencies):
 ```
-C:\>EasyAppInsall.exe C:\Apps\MyApp.appxbundle
+// EasyAppInstall.exe [App Package Path]
+C:\>EasyAppInsall.exe C:\AppPackages\MyApp.appxbundle
 ```
 
-
-
+Install app package with chosen depednency path:
+```
+// EasyAppInstall.exe [App Package Path] [Dependencies Directory*]
+// *Note: Please ensure the directory is contains dependencies for you device's architecure (x86, x64, arm, arm64 etc.)
+C:\>EasyAppInsall.exe C:\AppPackages\MyApp.appxbundle C:\Dependencies
+```
 
 
 
 ### For heavy command line users:
 You can follow this tutorial to add the folder where this progam is contained to the Path environment variable: https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
 
-After you do this, you'll be able to simply use "easyappinstall" from anywhere in the command line!
+After you do this, you will no longer need to navigate to where the program is installed to open in. You will be able to simply use "easyappinstall" from anywhere in the command line!
 
-## Features:
+## Help:
+For any questions or if you want to speak to me about anything, email me here: colinkiama@hotmail.co.uk
