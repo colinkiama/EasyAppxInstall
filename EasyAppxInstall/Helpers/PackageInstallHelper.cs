@@ -23,7 +23,7 @@ namespace EasyAppxInstall.Helpers
             string currentDirectory = Directory.GetCurrentDirectory();
             
             string packagePathFromCurrentDirectory = FileFinderHelper.FindFileFromDirectory(currentDirectory, appxPattern);
-            string[] dependencyPaths = DependencyHelper.GetDependencyPaths(currentDirectory + "\\Dependencies", true);
+            string[] dependencyPaths = DependencyHelper.GetDependencyPaths(currentDirectory + "\\Dependencies\\", true);
 
             if (packagePathFromCurrentDirectory == "")
             {
@@ -38,6 +38,7 @@ namespace EasyAppxInstall.Helpers
                 }
                 else
                 {
+                    Console.WriteLine("No dependencies found. Installing package only");
                     await InstallPackage(packagePathFromCurrentDirectory);
                 }
             }
@@ -98,21 +99,23 @@ namespace EasyAppxInstall.Helpers
             }
             catch (Exception e)
             {
-                PrintInstallErrorMessage(e.Message);
-               await InstallPackageWithoutDependencies(packagePath);
+               await InstallPackageWithoutDependencies(packagePath, e.Message);
             }
 
         }
 
-        private static async Task InstallPackageWithoutDependencies(string packagePath)
+        
+
+        private static async Task InstallPackageWithoutDependencies(string packagePath, string errorMessageWithDependencies = "Install with dependencies failed")
         {
+            Console.WriteLine("\n" + errorMessageWithDependencies);
             Console.WriteLine("Will now attempt to install the package without dependencies.");
             await InstallPackage(packagePath);
         }
 
         private static void PrintInstallErrorMessage(string message)
         {
-            Console.WriteLine(message);
+            Console.WriteLine("\n" + message);
             Program.BadExit();
         }
 
