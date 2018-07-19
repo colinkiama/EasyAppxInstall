@@ -116,7 +116,7 @@ namespace EasyAppxInstall.Helpers
 
         private static string UpdateSearchDirectory(string directory, string archFolderName)
         {
-            string directoryToReturn = $"\\{archFolderName}";
+            string directoryToReturn = $"{directory}\\{archFolderName}";
             Console.WriteLine($"Dependency Directory: {directoryToReturn}");
             return directoryToReturn ;
         }
