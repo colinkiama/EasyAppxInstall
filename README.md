@@ -21,12 +21,21 @@ For example:
 ```
 C:\>EasyAppInsall.exe [App Package Path]
 ```
-Usage Examples: 
+#### Usage Examples: 
 
+Install package from current directory (requires path installation):
+```
+
+```
+
+Install app package from its path (no dependencies):
 ```
 C:\>EasyAppInsall.exe C:\Apps\MyApp.appxbundle
-
 ```
+
+
+
+
 
 
 ### For heavy command line users:
